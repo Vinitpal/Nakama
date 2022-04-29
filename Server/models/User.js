@@ -43,6 +43,7 @@ const UserSchema = new mongoose.Schema(
     },
     desc: {
       type: String,
+      default: "",
       max: 50,
     },
     city: {
@@ -55,7 +56,7 @@ const UserSchema = new mongoose.Schema(
     },
     relationship: {
       type: Number,
-      enum: [1, 2, 3],
+      enum: ["Single", "Married", "Complicated"],
     },
   },
   {

@@ -18,9 +18,9 @@ router.post("/register", async (req, res) => {
 
     // save user and respond
     const user = await newUser.save();
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 
@@ -38,9 +38,9 @@ router.post("/login", async (req, res) => {
     );
     !validPassword && res.status(404).json({ message: "password not match" });
 
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json({ error: error });
   }
 });
 
