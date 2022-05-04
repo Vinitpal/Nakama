@@ -86,7 +86,7 @@ router.put("/:id/follow", async (req, res) => {
         });
       }
     } catch (error) {
-      return res.status(500).json;
+      return res.status(500).json(error);
     }
   } else {
     return res.status(403).json({ message: "You can't follow yourself" });
@@ -94,5 +94,36 @@ router.put("/:id/follow", async (req, res) => {
 });
 
 // unfollow
+router.put("/:id/unfollow", async (req, res) => {
+  // condition to check if you're not unfollowing yourself
+  if (req.body.userId !== req.params.id) {
+    try {
+      // here currentUser is sending unfollow req to user
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.userId);
+
+      // if already following
+      if (user.followers.includes(req.body.userId)) {
+        // then update the following and follower array
+        await user.updateOne({ $pull: { followers: req.body.userId } });
+        await currentUser.updateOne({
+          $pull: { following: req.params.id },
+        });
+
+        return res.status(200).json({
+          message: `${currentUser.username} no more follows ${user.username}`,
+        });
+      } else {
+        return res.status(403).json({
+          message: `${currentUser.username} doesn't follow ${user.username}`,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  } else {
+    return res.status(403).json({ message: "You can't unfollow yourself" });
+  }
+});
 
 module.exports = router;
