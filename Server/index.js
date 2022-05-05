@@ -9,6 +9,7 @@ dotenv.config();
 // Routes
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
+const postRoute = require("./routes/posts");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -29,6 +30,7 @@ app.use(morgan("common"));
 // Api routes
 app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/posts", postRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to homepage");
